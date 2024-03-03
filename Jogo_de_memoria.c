@@ -25,13 +25,14 @@ bool botao3Pressionado = false;
 bool botao4Pressionado = false;
 bool botao5Pressionado = false;
 
-void resetar_condicoes_game(){
-	botao0Pressionado = false; // Variável para rastrear se o botão 1 foi pressionado
-    botao1Pressionado = false; // Variável para rastrear se o botão 2 foi pressionado
-    botao2Pressionado = false;
-    botao3Pressionado = false;
-    botao4Pressionado = false;
-    botao5Pressionado = false;
+void reset(bool* botao0, bool* botao1, bool* botao2, bool* botao3, bool* botao4, bool* botao5) {
+  // seta as condições iniciais
+    *botao0 = false;
+    *botao1 = false;
+    *botao2 = false;
+    *botao3 = false;
+    *botao4 = false;
+    *botao5 = false;
 }
 
 void loop() {
@@ -148,16 +149,15 @@ void loop() {
     }
   }
   lcd_1.setCursor(0, 0);
-  
   if(verificacao==6){
-    lcd_1.print("Voceh ganhou!");
+    lcd_1.print("Voceh ganhou!"); // printa na tela do lcd
     delay(1000);
   }else{
     
     lcd_1.print("Game over!");
     delay(1000);
-    
   }
   lcd_1.clear();
-  resetar_game();
+  // enviar como parâmetro os ponteiros para as variáveis dos botões
+  reset(&botao0Pressionado, &botao1Pressionado, &botao2Pressionado, &botao3Pressionado, &botao4Pressionado, &botao5Pressionado);
 }
