@@ -1,163 +1,236 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd_1(32,16,2);
 
-const int ledPinos[] = {13, 12, 11, 10, 9, 8};
-const int botoesPinos[] = {2, 3, 4, 5, 6, 7};
+const int ledPins[] = {13, 12, 11, 10, 9, 8};
+const int button_order[] = {2, 3, 4, 5, 6, 7};
 const int numLeds = 6;
 
 void setup() {
-  lcd_1.init();
-  lcd_1.setCursor(0,0);
-  lcd_1.backlight();
-  lcd_1.display();
-  Serial.begin(9600);
-  for (int i = 0; i < numLeds; i++) {
-    pinMode(ledPinos[i], OUTPUT);
-    pinMode(botoesPinos[i], INPUT); // Habilita o resistor de pull-up interno nos pinos dos botões
+    lcd_1.init();
+    lcd_1.setCursor(0,0);
+    lcd_1.backlight();
+    lcd_1.display();
+    Serial.begin(9600);
+    for (int i = 0; i < numLeds; i++) {
+        pinMode(ledPins[i], OUTPUT);
+        pinMode(button_order[i], INPUT); // Enables the internal pull-up resistor on the button pins
+    }
+}
+
+
+bool button_pressed_one = false; // Variable to track whether button 2 has been pressed
+bool button_pressed_two = false;
+bool button_pressed_three = false;
+bool button_pressed_four = false;
+bool button_pressed_five = false;
+bool button_pressed_six = false;
+bool button_pressed[6];
+void reset(bool* button[], int quantity) {
+  // sets the initial conditions only for the specified buttons
+  for (int i = 0; i < quantity; i++) {
+    *(button[i]) = false;
   }
 }
-int ordem_correta[6];
-int ordem_selecionada[6];
-bool botao0Pressionado = false; // Variável para rastrear se o botão 1 foi pressionado
-bool botao1Pressionado = false; // Variável para rastrear se o botão 2 foi pressionado
-bool botao2Pressionado = false;
-bool botao3Pressionado = false;
-bool botao4Pressionado = false;
-bool botao5Pressionado = false;
-
-void reset(bool* botao0, bool* botao1, bool* botao2, bool* botao3, bool* botao4, bool* botao5) {
-  // seta as condições iniciais
-    *botao0 = false;
-    *botao1 = false;
-    *botao2 = false;
-    *botao3 = false;
-    *botao4 = false;
-    *botao5 = false;
-}
-
+bool state = true;
+int rounds = 1;
 void loop() {
-  bool numeros_unicos[6] = {false}; // Array para rastrear números únicos
-  int quantidade_gerada = 0; // Contador para acompanhar a quantidade de números gerados
+    Serial.print("\n START GAME \n");
+    for(int i = 0; i<rounds;i++){
+        int correct_order[rounds];
+      	int selected_order[rounds];
+        correct_order[i] = random(8, 14);
+        lcd_1.setCursor(0, 0);
+        lcd_1.print("rounds: ");
+        lcd_1.setCursor(0, 1);
+        lcd_1.print(rounds);
+        delay(1000);
+        lcd_1.clear();
+        Serial.print("\n\n variable rounds: ");
+        Serial.print(rounds);
+        for (int led = 0; led < rounds; led++) {
+            Serial.print("\n\n variable led (indice): ");
+            Serial.print(led);
+            Serial.print("\n pin: ");
+            Serial.print(correct_order[led]);
+            digitalWrite(correct_order[led],HIGH);
+            delay(1000);
+            digitalWrite(correct_order[led],LOW);
+            delay(1000);
+          }
+        int x = 0;
+      	
+      	do{
+          delay(150);
+          if(digitalRead(button_order[0]) == HIGH && !button_pressed_one){
+            selected_order[x] = 13;
+              if(selected_order[x] == correct_order[x]){
+                Serial.print("\n selected_order[x]: ");
+                Serial.print(selected_order[x]);
+                Serial.print("\n correct_order[x]: ");
+                Serial.print(correct_order[x]);    
+                Serial.print("\n valor do x: ");
+                Serial.print(x);
+                digitalWrite(selected_order[x], HIGH);
+                delay(1000);
+                digitalWrite(selected_order[x], LOW);
+                delay(200);
+                bool* button[] = {&button_pressed_one};
+  				reset(button, 1);
+                x++;
+              }
+              else{
+                  state = false; // to do The game over
+                  break;
+        	    }
+          }
+          if(digitalRead(button_order[1]) == HIGH && !button_pressed_two){
+            selected_order[x] = 12;
+            if(selected_order[x] == correct_order[x]){
+              Serial.print("\n selected_order[x]: ");
+              Serial.print(selected_order[x]);
+              Serial.print("\n correct_order[x]: ");
+              Serial.print(correct_order[x]);    
+              Serial.print("\n valor do x: ");
+              Serial.print(x);
+              digitalWrite(selected_order[x], HIGH);
+                delay(1000);
+                digitalWrite(selected_order[x], LOW);
+                delay(200);
+                bool* button[] = {&button_pressed_two};
+  				      reset(button, 1);
+                x++;
+            }else{
+                state = false; // to do The game over
+                break;
+            }
+          }
+          if(digitalRead(button_order[2]) == HIGH && !button_pressed_three){
+            selected_order[x] = 11;
+            if(selected_order[x] == correct_order[x]){
+                Serial.print("\n selected_order[x]: ");
+                Serial.print(selected_order[x]);
+                Serial.print("\n correct_order[x]: ");
+                Serial.print(correct_order[x]);    
+                Serial.print("\n valor do x: ");
+                Serial.print(x);
+              digitalWrite(selected_order[x], HIGH);
+                delay(1000);
+                digitalWrite(selected_order[x], LOW);
+                delay(200);
+                bool* button[] = {&button_pressed_three};
+                reset(button, 1);
+                x++;
+            }else{
+              state = false; // to do The game over
+              break;
+            }
+          }
+          if(digitalRead(button_order[3]) == HIGH && !button_pressed_four){
+            selected_order[x] = 10;
+            if(selected_order[x] == correct_order[x]){
+              Serial.print("\n selected_order[x]: ");
+              Serial.print(selected_order[x]);
+              Serial.print("\n correct_order[x]: ");
+              Serial.print(correct_order[x]);    
+              Serial.print("\n valor do x: ");
+              Serial.print(x);
+              digitalWrite(selected_order[x], HIGH);
+                delay(1000);
+                digitalWrite(selected_order[x], LOW);
+                delay(200);
+              bool* button[] = {&button_pressed_four};
+  			      reset(button, 1);
+              x++;
+            }else{
+              state = false; // to do The game over
+              break;
+            }
+          }
+          if(digitalRead(button_order[4]) == HIGH && !button_pressed_five){
+            selected_order[x] = 9;
+            if(selected_order[x] == correct_order[x]){
+              Serial.print("\n selected_order[x]: ");
+              Serial.print(selected_order[x]);
+              Serial.print("\n correct_order[x]: ");
+              Serial.print(correct_order[x]);    
+              Serial.print("\n valor do x: ");
+              Serial.print(x);
+              digitalWrite(selected_order[x], HIGH);
+                delay(1000);
+                digitalWrite(selected_order[x], LOW);
+                delay(200);
+              bool* button[] = {&button_pressed_five};
+              reset(button, 1);
+              x++;
+            }else{
+              state = false; // to do The game over
+              break;
+            }
+          }
+          if(digitalRead(button_order[5]) == HIGH && !button_pressed_six){
+            selected_order[x] = 8;
+            
+            if(selected_order[x] == correct_order[x]){
+              
+              digitalWrite(selected_order[x], HIGH);
+              delay(1000);
+              digitalWrite(selected_order[x], LOW);
+              delay(200);
+              bool* button[] = {&button_pressed_six};
+  			  reset(button, 1);
+              x++;
+            }else{
+              state = false; // to do The game over
+              break;
+            }
+          }
+        }while(x<rounds);
+      if(rounds==3){
+        Serial.print("\n");
+      	Serial.print(selected_order[0]);
+        Serial.print("\n");
+        Serial.print(selected_order[1]);
+        Serial.print("\n");
+        Serial.print(selected_order[2]);
+      }
+        if(state == true){
+          	lcd_1.setCursor(0, 0);
+            lcd_1.print("YOU SELECTED: "+(String)selected_order[x]);
+            delay(1400);
+            lcd_1.setCursor(0, 1);
+            lcd_1.print("BUT IT WAS: " + String(correct_order[x]));
+            delay(1400);
+            lcd_1.clear();
+            lcd_1.setCursor(0, 0);
+            lcd_1.print("CONGRATULATIONS!");
+            delay(1000);
+            lcd_1.clear();
+          	rounds++;
 
-  while (quantidade_gerada < 6) {
-    int numero = random(8, 14); // Gera um número aleatório entre 8 e 13
-    int indice = numero - 8; // Calcula o índice no array (subtrai 8 para ajustar)
-
-    if (!numeros_unicos[indice]) { // Verifica se o número ainda não foi gerado
-      ordem_correta[quantidade_gerada++] = numero; // Adiciona o número ao array
-      numeros_unicos[indice] = true; // Marca o número como gerado
+        }else{
+            lcd_1.setCursor(0, 0);
+            lcd_1.print("YOU LOSS :<");
+          	lcd_1.setCursor(0, 1);
+            lcd_1.print("YOU SELECTED: "+(String)selected_order[x]);
+            delay(2000);
+          	lcd_1.clear();
+        	lcd_1.setCursor(0, 0);
+          	lcd_1.print("BUT IT WAS: " + String(correct_order[x]));
+          	delay(2000);
+         	lcd_1.clear();
+            rounds = 1;
+            // to do any treading for this situation
+        }
     }
-  }
+    Serial.println("\n ------- THE GAME IS OVER -----------");
+  // correct_order - selected_order 
+  // pin (led)     - pin (button)   +  cts(normalizacao)
+  // 13            - 2              +  11     = 13
+  // 12            - 3              +   9     = 12
+  // 11            - 4              +   7     = 11
+  // 10            - 5              +   5     = 10
+  //  9            - 6              +   3     =  9
 
-  // mostrar ao jogador a sequencia que ele deve memorizar
-  Serial.println("new sequence");
-  for (int i = 0; i < 6; i++) {
-    Serial.print(ordem_correta[i]);
-    Serial.print(",");
-    digitalWrite(ordem_correta[i],HIGH);
-   	delay(100);
-    digitalWrite(ordem_correta[i],LOW);
-    delay(50);
-  }
-  Serial.println("\n \n aperte os botoes correspondentes \n");
-  int x = 0;
-  do {
-    if(digitalRead(botoesPinos[0]) == HIGH && !botao0Pressionado) {
-      Serial.println("\n pressionado");
-      Serial.print("indice: ");
-      Serial.print(x);
-      Serial.print("\n pino: ");
-      Serial.print(botoesPinos[0]);
-      ordem_selecionada[x] = botoesPinos[0] + 11;
-      botao0Pressionado = true;
-      x++;
-    } 
-    if(digitalRead(botoesPinos[1]) == HIGH && !botao1Pressionado) {
-      Serial.println("\n pressionado");
-      Serial.print("indice: ");
-      Serial.print(x);
-      Serial.print("\n pino: ");
-      Serial.print(botoesPinos[1]);
-      ordem_selecionada[x] = botoesPinos[1] + 9;
-      botao1Pressionado = true;
-      x++;
-    } 
-    if(digitalRead(botoesPinos[2]) == HIGH && !botao2Pressionado) {
-      Serial.println("\n pressionado");
-      Serial.print("indice: ");
-      Serial.print(x);
-      Serial.print("\n pino: ");
-      Serial.print(botoesPinos[2]);
-      ordem_selecionada[x] = botoesPinos[2] + 7;
-      botao2Pressionado = true;
-      x++;
-    } 
-    if(digitalRead(botoesPinos[3]) == HIGH && !botao3Pressionado) {
-      Serial.println("\n pressionado");
-      Serial.print("indice: ");
-      Serial.print(x);
-      Serial.print("\n pino: ");
-      Serial.print(botoesPinos[3]);
-      ordem_selecionada[x] = botoesPinos[3] + 5;
-      botao3Pressionado = true;
-      x++;
-    } 
-    if(digitalRead(botoesPinos[4]) == HIGH && !botao4Pressionado) {
-      Serial.println("\n pressionado");
-      Serial.print("indice: ");
-      Serial.print(x);
-      Serial.print("\n pino: ");
-      Serial.print(botoesPinos[4]);
-      ordem_selecionada[x] = botoesPinos[4] + 3;
-      botao4Pressionado = true;
-      x++;
-    }  
-    if(digitalRead(botoesPinos[5]) == HIGH && !botao5Pressionado) {
-      Serial.println("\n pressionado");
-      Serial.print("indice: ");
-      Serial.print(x);
-      Serial.print("\n pino: ");
-      Serial.print(botoesPinos[5]);
-      ordem_selecionada[x] = botoesPinos[5] + 1;
-      botao5Pressionado = true;
-      x++;
-    }  
-    
-  } while (x < 6);
-  Serial.println("\n\n acabou \n\n");
-  // mostrar ao jogador a sequencia que ele deve memorizar
-  Serial.println("sequence selected");
-  for (int i = 0; i < 6; i++) {
-    Serial.print(ordem_selecionada[i]);
-    Serial.print(",");
-  }
-  int verificacao = 0;
-  // ordem_correta - ordem_selecionada 
-  // pino - pino +  cts(normalizacao)
-  // 13   - 2    +  11
-  // 12   - 3    +   9
-  // 11   - 4    +   7
-  // 10   - 5    +   5
-  //  9   - 6    +   3
-  //  8   - 7    +   1 
-  for(int j=0;j<6;j++){
-    if(ordem_correta[j] == ordem_selecionada[j]){
-    	verificacao++;
-      	Serial.println("\n\n Verificacao: ");
-      	Serial.println(verificacao);
-        Serial.println("\n\n ");
-    }
-  }
-  lcd_1.setCursor(0, 0);
-  if(verificacao==6){
-    lcd_1.print("Voceh ganhou!"); // printa na tela do lcd
-    delay(1000);
-  }else{
-    
-    lcd_1.print("Game over!");
-    delay(1000);
-  }
-  lcd_1.clear();
-  // enviar como parâmetro os ponteiros para as variáveis dos botões
-  reset(&botao0Pressionado, &botao1Pressionado, &botao2Pressionado, &botao3Pressionado, &botao4Pressionado, &botao5Pressionado);
+  bool* button[] = {&button_pressed_one, &button_pressed_two, &button_pressed_three, &button_pressed_four, &button_pressed_five, &button_pressed_six};
+  reset(button, 6); // This will reset only the first 6 buttons
 }
