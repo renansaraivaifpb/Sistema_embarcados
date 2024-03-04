@@ -32,15 +32,29 @@ void reset(bool* button[], int quantity) {
   }
 }
 bool state = true;
+bool game = false;
 int rounds = 1;
+void on_led(int pin){
+	digitalWrite(pin, HIGH);
+    delay(1000);
+    digitalWrite(pin, LOW);
+    delay(200);
+}
+
 void loop() {
-    Serial.print("\n START GAME \n");
+  if(digitalRead(button_order[5]) == HIGH){
+    lcd_1.clear();
+    lcd_1.setCursor(0, 0);
+     lcd_1.print("TRY TO REMEMBER");
+          	
+     delay(2000);
+     lcd_1.clear();
     for(int i = 0; i<rounds;i++){
         int correct_order[rounds];
       	int selected_order[rounds];
         correct_order[i] = random(8, 14);
         lcd_1.setCursor(0, 0);
-        lcd_1.print("rounds: ");
+        lcd_1.print("ROUNDS: ");
         lcd_1.setCursor(0, 1);
         lcd_1.print(rounds);
         delay(1000);
@@ -64,16 +78,12 @@ void loop() {
           if(digitalRead(button_order[0]) == HIGH && !button_pressed_one){
             selected_order[x] = 13;
               if(selected_order[x] == correct_order[x]){
-                Serial.print("\n selected_order[x]: ");
-                Serial.print(selected_order[x]);
-                Serial.print("\n correct_order[x]: ");
-                Serial.print(correct_order[x]);    
-                Serial.print("\n valor do x: ");
-                Serial.print(x);
-                digitalWrite(selected_order[x], HIGH);
-                delay(1000);
-                digitalWrite(selected_order[x], LOW);
-                delay(200);
+
+                on_led(selected_order[x]);
+                lcd_1.setCursor(0, 0);
+                lcd_1.print("GOOD JOB!");
+                delay(2000);
+                lcd_1.clear();
                 bool* button[] = {&button_pressed_one};
   				reset(button, 1);
                 x++;
@@ -86,16 +96,11 @@ void loop() {
           if(digitalRead(button_order[1]) == HIGH && !button_pressed_two){
             selected_order[x] = 12;
             if(selected_order[x] == correct_order[x]){
-              Serial.print("\n selected_order[x]: ");
-              Serial.print(selected_order[x]);
-              Serial.print("\n correct_order[x]: ");
-              Serial.print(correct_order[x]);    
-              Serial.print("\n valor do x: ");
-              Serial.print(x);
-              digitalWrite(selected_order[x], HIGH);
-                delay(1000);
-                digitalWrite(selected_order[x], LOW);
-                delay(200);
+              	on_led(selected_order[x]);
+                lcd_1.setCursor(0, 0);
+                lcd_1.print("NICE!");
+                delay(2000);
+                lcd_1.clear();
                 bool* button[] = {&button_pressed_two};
   				      reset(button, 1);
                 x++;
@@ -107,16 +112,11 @@ void loop() {
           if(digitalRead(button_order[2]) == HIGH && !button_pressed_three){
             selected_order[x] = 11;
             if(selected_order[x] == correct_order[x]){
-                Serial.print("\n selected_order[x]: ");
-                Serial.print(selected_order[x]);
-                Serial.print("\n correct_order[x]: ");
-                Serial.print(correct_order[x]);    
-                Serial.print("\n valor do x: ");
-                Serial.print(x);
-              digitalWrite(selected_order[x], HIGH);
-                delay(1000);
-                digitalWrite(selected_order[x], LOW);
-                delay(200);
+                on_led(selected_order[x]);
+                lcd_1.setCursor(0, 0);
+                lcd_1.print("GOOD PLAY!");
+                delay(2000);
+                lcd_1.clear();
                 bool* button[] = {&button_pressed_three};
                 reset(button, 1);
                 x++;
@@ -128,16 +128,11 @@ void loop() {
           if(digitalRead(button_order[3]) == HIGH && !button_pressed_four){
             selected_order[x] = 10;
             if(selected_order[x] == correct_order[x]){
-              Serial.print("\n selected_order[x]: ");
-              Serial.print(selected_order[x]);
-              Serial.print("\n correct_order[x]: ");
-              Serial.print(correct_order[x]);    
-              Serial.print("\n valor do x: ");
-              Serial.print(x);
-              digitalWrite(selected_order[x], HIGH);
-                delay(1000);
-                digitalWrite(selected_order[x], LOW);
-                delay(200);
+              on_led(selected_order[x]);
+              lcd_1.setCursor(0, 0);
+              lcd_1.print("VERY NICE!");
+              delay(1000);
+              lcd_1.clear();
               bool* button[] = {&button_pressed_four};
   			      reset(button, 1);
               x++;
@@ -149,16 +144,12 @@ void loop() {
           if(digitalRead(button_order[4]) == HIGH && !button_pressed_five){
             selected_order[x] = 9;
             if(selected_order[x] == correct_order[x]){
-              Serial.print("\n selected_order[x]: ");
-              Serial.print(selected_order[x]);
-              Serial.print("\n correct_order[x]: ");
-              Serial.print(correct_order[x]);    
-              Serial.print("\n valor do x: ");
-              Serial.print(x);
-              digitalWrite(selected_order[x], HIGH);
-                delay(1000);
-                digitalWrite(selected_order[x], LOW);
-                delay(200);
+              
+              on_led(selected_order[x]);
+              lcd_1.setCursor(0, 0);
+              lcd_1.print("NICE!");
+              delay(1000);
+              lcd_1.clear();
               bool* button[] = {&button_pressed_five};
               reset(button, 1);
               x++;
@@ -169,13 +160,12 @@ void loop() {
           }
           if(digitalRead(button_order[5]) == HIGH && !button_pressed_six){
             selected_order[x] = 8;
+            on_led(selected_order[x]);
+              lcd_1.setCursor(0, 0);
+              lcd_1.print("GOOD JOB!");
+              delay(1000);
             
             if(selected_order[x] == correct_order[x]){
-              
-              digitalWrite(selected_order[x], HIGH);
-              delay(1000);
-              digitalWrite(selected_order[x], LOW);
-              delay(200);
               bool* button[] = {&button_pressed_six};
   			  reset(button, 1);
               x++;
@@ -195,14 +185,7 @@ void loop() {
       }
         if(state == true){
           	lcd_1.setCursor(0, 0);
-            lcd_1.print("YOU SELECTED: "+(String)selected_order[x]);
-            delay(1400);
-            lcd_1.setCursor(0, 1);
-            lcd_1.print("BUT IT WAS: " + String(correct_order[x]));
-            delay(1400);
-            lcd_1.clear();
-            lcd_1.setCursor(0, 0);
-            lcd_1.print("CONGRATULATIONS!");
+            lcd_1.print("YOU REMEMBERED!");
             delay(1000);
             lcd_1.clear();
           	rounds++;
@@ -215,22 +198,23 @@ void loop() {
             delay(2000);
           	lcd_1.clear();
         	lcd_1.setCursor(0, 0);
-          	lcd_1.print("BUT IT WAS: " + String(correct_order[x]));
-          	delay(2000);
+          	lcd_1.print("BUT IT WAS: " + (String)correct_order[x]);
+          	delay(2500);
          	lcd_1.clear();
             rounds = 1;
             // to do any treading for this situation
         }
     }
     Serial.println("\n ------- THE GAME IS OVER -----------");
-  // correct_order - selected_order 
-  // pin (led)     - pin (button)   +  cts(normalizacao)
-  // 13            - 2              +  11     = 13
-  // 12            - 3              +   9     = 12
-  // 11            - 4              +   7     = 11
-  // 10            - 5              +   5     = 10
-  //  9            - 6              +   3     =  9
+
 
   bool* button[] = {&button_pressed_one, &button_pressed_two, &button_pressed_three, &button_pressed_four, &button_pressed_five, &button_pressed_six};
   reset(button, 6); // This will reset only the first 6 buttons
+  }else{
+  lcd_1.setCursor(0, 0);
+            lcd_1.print("PRESS BUTTON SIX  ");
+          	lcd_1.setCursor(0, 1);
+            lcd_1.print("TO PLAY");
+            
+          	}
 }
