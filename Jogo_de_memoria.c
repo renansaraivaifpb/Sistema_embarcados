@@ -6,7 +6,7 @@ const int button_order[] = {2, 3, 4, 5, 6, 7};
 const int numLeds = 6;
 
 void setup() {
-    lcd_1.init();
+    lcd_1.init(); // or lcd_1.begin(); to old version
     lcd_1.setCursor(0,0);
     lcd_1.backlight();
     lcd_1.display();
