@@ -6,6 +6,7 @@ As the player progresses through the rounds, the difficulty increases, requiring
 
 The system can impose a limitation on the maximum size of the generated sequence, which makes the game challenging even for players with moderate memory skills, guaranteeing an engaging and exciting experience.
 
-![Texto Alternativo]([URL_da_Imagem](https://maker.pro/storage/LrBD9qh/LrBD9qhxZRyZEJTMX1i4uhxzS7feOc9yLRPP4hkN.png))
+Port Manipulation was used to define whether the pin would be output or input and to write low and high values to these pins.
+![Port Manipulation](https://maker.pro/storage/LrBD9qh/LrBD9qhxZRyZEJTMX1i4uhxzS7feOc9yLRPP4hkN.png)
 
 link to code in tinkcard: https://www.tinkercad.com/things/7hEbJLKvcWZ-jogo-de-memoria-com-leds/editel?returnTo=%2Fdashboard%3Ftype%3Dcircuits%26collection%3Ddesigns&sharecode=sDKxwsXDKKLwya_MJMM1tMz0lrFlFT1y2hpoWrYPgec
