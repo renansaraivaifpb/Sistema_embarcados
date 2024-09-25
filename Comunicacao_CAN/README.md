@@ -29,7 +29,7 @@ Se os valores de **umidade** e **temperatura** excederem 30, o servo motor é ac
 ## Hardware
 ### CAN Shield
 
-![Diagrama]([https://github.com/renansaraivaifpb/Sistema_embarcados/blob/main/output.png](https://github.com/renansaraivaifpb/Sistema_embarcados/blob/main/Comunicacao_CAN/wiring.png))
+![MCP 2515](https://raw.githubusercontent.com/autowp/arduino-mcp2515/master/examples/wiring.png)
 
 ## Funcionalidades
 
