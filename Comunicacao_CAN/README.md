@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/554e9232-84d3-4a18-9f15-e5ff5388b257)# Projeto CAN Bus com Sensor DHT11 e Controle de Servo
+# Projeto CAN Bus com Sensor DHT11 e Controle de Servo
 
 Este projeto implementa a leitura de um sensor DHT11 (umidade e temperatura) e utiliza a comunicação via barramento CAN (Controller Area Network) para enviar e receber esses dados. Além disso, um servo motor é controlado com base nas leituras de umidade e temperatura.
 
@@ -33,8 +33,15 @@ Se os valores de **umidade** e **temperatura** excederem 30, o servo motor é ac
 
 ## Protocolo CAN
 
+Dispositivos em um barramento CAN são chamados de "nós". Cada nó consiste em uma CPU, controlador CAN e um transceptor, que adapta os níveis de sinal dos dados enviados e recebidos pelo nó. Todos os nós podem enviar e receber dados, mas não ao mesmo tempo.
+
+Os nós não podem enviar dados diretamente entre si. Em vez disso, eles enviam seus dados para a rede, onde ficam disponíveis para qualquer nó ao qual foram endereçados.
+
 ![Rede CAN](https://gallery3.otenko.com/rest/data/10657?size=full)
 
+O sinal da CANL tem o mesmo nível lógico do dado e o da CANH tem o nível lógico complementar, portanto, fica fácil de entender a figura a seguir. Observe que um nível lógico ‘1’, do dado, representa um bit recessivo porque CANL vai para nível lógico ‘1’ e CANH para nível lógico complementar ‘0’.
+
+![ddp](https://revistaft.com.br/wp-content/uploads/2023/05/image-1893.png)
 
 ## Funcionalidades
 
@@ -80,6 +87,82 @@ Antes de começar, certifique-se de que as bibliotecas necessárias estão insta
 - Conecte o **servo motor** ao pino 8 do Arduino.
 - Conecte o módulo **MCP2515** ao Arduino utilizando os pinos SPI (10 para CS, 11 para MOSI, 12 para MISO e 13 para SCK).
 - Assegure-se de que todos os componentes estão corretamente alimentados (5V/GND).
+
+### 3. Explicação do código
+
+Para realizar o controle do Servo-Motor, é necessário incluir a biblioteca e criar um objeto para o mesmo:
+
+```C
+#include <Servo.h>  // Biblioteca para controle de servos
+Servo myservo;  // Cria um objeto para o servo motor
+```
+
+Por padrão, a conexão CS do mcp2515 é conectado no pino 10, além de que a frequência oscilatória padrão é de 16 MHz, entretanto pode-se variar de 8 MHz e 20 MHz. Inicialmente, é necessário fazer algumas configurações no objeto criado do mcp2515. Assim, na função setup deve configurar para:
+
+```C
+MCP2515 mcp2515(10);
+mcp2515.reset();
+mcp2515.setBitrate(CAN_500KBPS, 8MHZ);
+mcp2515.setNormalMode();
+
+myservo.attach(8);  // Conecta o servo ao pino 8 do Arduino
+```
+
+
+#### 3.1 Estrutura da mensagem transmitida
+No protocolo CAN existe dois tipos de quadros base e o extendido, na biblioteca utilizada para este projeto, usa-se o quadro base. Veja na figura abaixo que, que os quadros são divididos em campos
+as quais realizam tarefas especificas. Porém, a biblioteca "MCP2515 CAN interface library" enfatiza, para pequenos projetos, os campos ID - identificador do frame -, DLC - tamanho do dado a ser transmitido (4 bit) - e Data field - tamanho do dado (8 bytes).
+
+![Estrutura do frame](https://raw.githubusercontent.com/renansaraivaifpb/Sistema_embarcados/refs/heads/main/Comunicacao_CAN/Standard-and-extended-CAN-frames.png)
+
+```C
+// Configura o frame de umidade
+umidadeFrame.can_id = 0x123;  // Define o ID do frame CAN (padrão de 11 bits, valor arbitrário 0x123)
+umidadeFrame.can_dlc = 1;  // Define o número de bytes de dados a serem enviados (1 byte neste caso)
+
+// Configura o frame de temperatura
+temperaturaFrame.can_id = 0x125;  // Define o ID do frame CAN para a temperatura (valor arbitrário 0x125)
+temperaturaFrame.can_dlc = 1;  // Define o número de bytes de dados a serem enviados (1 byte para temperatura)
+
+umidadeFrame.data[0] = (float)DHT11.humidity;  // Converte o valor de umidade do sensor em float e armazena no frame CAN
+temperaturaFrame.data[0] = (float)DHT11.temperature;  // Converte o valor da temperatura em float e armazena no frame CAN
+```
+#### 3.2 Envio da Mensagem
+
+O envio da mensagem, deve ser utilizando a função da classe mcp2515, de acordo com a linha do código abaixo:
+
+```C
+mcp2515.sendMessage(&temperaturaFrame)
+mcp2515.sendMessage(&umidadeFrame)
+```
+
+#### 3.3 Leitura da Mensagem
+
+Para fazer a leitura, segue a mesma lógica, usa-se uma função da classe:
+
+```C
+mcp2515.readMessage(&umidadeFrame)
+mcp2515.readMessage(&temperaturaFrame)
+
+// Para verificar se há alguma mensagem transmitida no barramento CAN, usa-se  MCP2515::ERROR_OK.
+// Então é possível fazer uma estrutura de condição e comparar o valor lido com  MCP2515::ERROR_OK, se for verdade, é porquê chegou a mensagem com sucesso.
+```
+
+#### 3.4 Controle do Servo-Motor
+
+Assim, para simular o acionamento de um Ar-Condicionado baseado na umidade e temperatura, foi utilizado um Servo-Motor:
+
+```C
+if (umidadeFrame.data[0] > 30 && temperaturaFrame.data[0] > 30) {
+        // Se os valores forem maiores que 30, movimenta o servo para a posição 190 graus
+        myservo.write(190);  
+        delay(500);  // Aguarda 500 ms
+        myservo.write(0);  // Retorna o servo à posição inicial (0 graus)
+        delay(500);  // Aguarda mais 500 ms
+}
+```
+
+
 
 ### 3. Carregar o Código no Arduino
 
