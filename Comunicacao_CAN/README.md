@@ -41,7 +41,7 @@ Os nós não podem enviar dados diretamente entre si. Em vez disso, eles enviam 
 
 O sinal da CANL tem o mesmo nível lógico do dado e o da CANH tem o nível lógico complementar, portanto, fica fácil de entender a figura a seguir. Observe que um nível lógico ‘1’, do dado, representa um bit recessivo porque CANL vai para nível lógico ‘1’ e CANH para nível lógico complementar ‘0’.
 
-![ddp](https://revistaft.com.br/wp-content/uploads/2023/05/image-1893.png)
+![ddp](https://raw.githubusercontent.com/renansaraivaifpb/Sistema_embarcados/refs/heads/main/Comunicacao_CAN/ddp.png)
 
 ## Funcionalidades
 
@@ -135,6 +135,9 @@ O envio da mensagem, deve ser utilizando a função da classe mcp2515, de acordo
 mcp2515.sendMessage(&temperaturaFrame)
 mcp2515.sendMessage(&umidadeFrame)
 ```
+
+!()[https://raw.githubusercontent.com/renansaraivaifpb/Sistema_embarcados/refs/heads/main/Comunicacao_CAN/ddp.png]
+
 
 #### 3.3 Leitura da Mensagem
 
