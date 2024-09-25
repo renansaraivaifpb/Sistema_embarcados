@@ -136,7 +136,9 @@ mcp2515.sendMessage(&temperaturaFrame)
 mcp2515.sendMessage(&umidadeFrame)
 ```
 
-!()[https://raw.githubusercontent.com/renansaraivaifpb/Sistema_embarcados/refs/heads/main/Comunicacao_CAN/ddp.png]
+Para verificar o envio da mensagem para o barramento, é possível verificar os sinais correspondentes às mensagens transmitidos, no osciloscópio.
+
+![Visualização transmissão da mensagem no barramento](https://raw.githubusercontent.com/renansaraivaifpb/Sistema_embarcados/refs/heads/main/Comunicacao_CAN/visualizacao%20msg%20can.jpg)
 
 
 #### 3.3 Leitura da Mensagem
