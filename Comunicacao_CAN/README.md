@@ -26,6 +26,11 @@ Se os valores de **umidade** e **temperatura** excederem 30, o servo motor é ac
 - **Protoboard e cabos jumper**
 - **Fonte de alimentação** compatível com os componentes
 
+## Hardware
+### CAN Shield
+
+![Diagrama]([https://github.com/renansaraivaifpb/Sistema_embarcados/blob/main/output.png](https://github.com/renansaraivaifpb/Sistema_embarcados/blob/main/Comunicacao_CAN/wiring.png))
+
 ## Funcionalidades
 
 1. **Leitura do Sensor DHT11**: Leitura de dados de umidade e temperatura.
