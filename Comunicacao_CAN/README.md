@@ -1,4 +1,4 @@
-# Projeto CAN Bus com Sensor DHT11 e Controle de Servo
+![image](https://github.com/user-attachments/assets/554e9232-84d3-4a18-9f15-e5ff5388b257)# Projeto CAN Bus com Sensor DHT11 e Controle de Servo
 
 Este projeto implementa a leitura de um sensor DHT11 (umidade e temperatura) e utiliza a comunicação via barramento CAN (Controller Area Network) para enviar e receber esses dados. Além disso, um servo motor é controlado com base nas leituras de umidade e temperatura.
 
@@ -29,7 +29,12 @@ Se os valores de **umidade** e **temperatura** excederem 30, o servo motor é ac
 ## Hardware
 ### CAN Shield
 
-![MCP 2515](https://raw.githubusercontent.com/autowp/arduino-mcp2515/master/examples/wiring.png)
+![MCP 2515](https://how2electronics.com/wp-content/uploads/2022/07/MCP2515-Parts.jpg)
+
+## Protocolo CAN
+
+![Rede CAN](https://gallery3.otenko.com/rest/data/10657?size=full)
+
 
 ## Funcionalidades
 
