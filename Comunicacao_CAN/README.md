@@ -1,7 +1,11 @@
 Instituição: IFPB - Cajazeiras
+
 Disciplina: Sistema Embarcados
+
 Acadêmicos: Henrique Sobral e Renan Saraiva 
+
 Orientador: prof. Dr. Leando Honorato
+
 
 # Projeto CAN Bus com Sensor DHT11 e Controle de Servo
 
