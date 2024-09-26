@@ -1,3 +1,8 @@
+Instituição: IFPB - Cajazeiras
+Disciplina: Sistema Embarcados
+Acadêmicos: Henrique Sobral e Renan Saraiva 
+Orientador: prof. Dr. Leando Honorato
+
 # Projeto CAN Bus com Sensor DHT11 e Controle de Servo
 
 Este projeto implementa a leitura de um sensor DHT11 (umidade e temperatura) e utiliza a comunicação via barramento CAN (Controller Area Network) para enviar e receber esses dados. Além disso, um servo motor é controlado com base nas leituras de umidade e temperatura.
